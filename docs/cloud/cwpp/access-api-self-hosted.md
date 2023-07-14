@@ -59,10 +59,10 @@ Assume your username is api, and your password is api.
 1. To access any other endpoint, set the Authorization field of your HTTP header to Basic and add the encoded string.
 For example, to get all your runtime container policies:
 
-  ```
+  ```bash
   $ curl --insecure \
     -H 'Authorization: Basic YWRtaW46YWRtaW4=' \
-    https://<CONSOLE>:8083/api/v1/policies/runtime/container
+    "https://<CONSOLE>/api/v<VERSION>/policies/runtime/container
   ```
 
 :::note
@@ -74,15 +74,17 @@ The curl command can handle basic auth for you with the `--user` option.
 
 To access the API using a token:
 
-1. Retrieve a token from the api/v1/authenticate endpoint with your user credentials.
-Tokens are valid for 24 hours.
+1. Retrieve a token from the api/vVERSION/authenticate endpoint with your user credentials.
+
+By default, access tokens are valid for 30 minutes. You can set the validity period in Console under **Manage** > **Authentication** > **Logon**.
+
 You can also retrieve tokens using client certificates.
 
-  ```
+  ```bash
   $ curl \
     -H "Content-Type: application/json" \
     -d '{"username":"admin", "password":"admin"}' \
-    https://<CONSOLE>:8083/api/v1/authenticate
+    "https://<CONSOLE>/api/v<VERSION>/authenticate"
   {
    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
   }
@@ -91,23 +93,23 @@ You can also retrieve tokens using client certificates.
   If you integrated Prisma Cloud Console with Active Directory, and you're using the sAMAccountName _user identifier_, escape the backslash in the `DOMAIN\sAMAccountName` username value.
   For example:
 
-  ```
+  ```bash
   $ curl \
     -H "Content-Type: application/json" \
     -d '{"username":"DOMAIN\\admin", "password":"admin"}' \
-    https://<CONSOLE>:8083/api/v1/authenticate
+    "https://<CONSOLE>/api/v<VERSION>/authenticate"
   {
    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
   }
   ```
 
 1. Call the Prisma Cloud API, submitting the token in the Authorization field in the HTTP header of your request.
-For example, test connection to the API using the _/api/v1/policies_ endpoint:
+For example, test connection to the API using the _/api/vVERSION/policies_ endpoint:
 
-  ```
+  ```bash
   $ curl --insecure \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-    https://<CONSOLE>:8083/api/v1/policies/runtime/container
+    "https://<CONSOLE>/api/v<VERSION>/policies/runtime/container"
   ```
 
 ## Accessing the API using a client certificate
@@ -123,11 +125,11 @@ Go to **Manage > Authentication > Certificates > TLS certificate for Console**, 
 
 1. Request a token using your client certificate.
 
-  ```
+  ```bash
   $ curl --insecure \
     -X POST \
     --cert cert.pem \
-    https://<CONSOLE>:8083/api/v1/authenticate-client
+    "https://<CONSOLE>/api/v<VERSION>/authenticate-client"
   {
    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
   }
@@ -136,10 +138,10 @@ Go to **Manage > Authentication > Certificates > TLS certificate for Console**, 
 1. Call the Prisma Cloud API, submitting the token in the Authorization field in the HTTP header of your request.
 For example, to get all policies:
 
-  ```
+  ```bash
   $ curl --insecure \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-    https://<CONSOLE>:8083/api/v1/policies/runtime/container
+    "https://<CONSOLE>/api/v<VERSION>/policies/runtime/container"
   ```
 
 ## Accessing the API in a Multi-Tenant Environment

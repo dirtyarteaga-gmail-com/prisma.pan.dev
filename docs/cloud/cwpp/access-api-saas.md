@@ -15,28 +15,6 @@ By default, the Prisma Cloud System Admin role is mapped to the Prisma Cloud Com
 
 For automated workflows, you'll want to provision a service account with the minimum required permissions.
 
-
-## Accessing the API using Basic authentication
-
-Get your Compute Console's address and then use basic auth to access the API.
-
-1. Get the path to your Console.
-
-   1. Go to **Compute > Manage > System > Utilities**.
-
-   1. Under **Path to Console**, click **Copy**.
-
-1. Access an API endpoint.
-
-   In this example, retrieve the rules in your compliance policy.
-   The Auditor role has permission to see this data.
-
-   ```
-   $ curl \
-   -u <PRISMA_CLOUD_USER> \
-   https://<CONSOLE>/api/v1/policies/compliance/container
-   ```
-
 ## Accessing the API using token authentication
 
 Get your Compute Console's address, retrieve an token, then use the token to access the API.
@@ -54,14 +32,14 @@ We recommend that you renew the Compute token every 5 minutes (half the lifetime
 
    1. Under **Path to Console**, click **Copy**.
 
-1. Retrieve a token from the api/v1/authenticate endpoint with your user credentials.
+1. Retrieve a token from the api/vVERSION/authenticate endpoint with your user credentials.
 Tokens are valid for 24 hours.
 
-  ```
+  ```bash
   $ curl \
     -H "Content-Type: application/json" \
     -d '{"username":"<PRISMA_CLOUD_USER>", "password":"<PASSWD>"}' \
-    https://<CONSOLE>/api/v1/authenticate
+    "https://<CONSOLE>/api/v<VERSION>/authenticate"
   {
    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
   }
@@ -70,11 +48,11 @@ Tokens are valid for 24 hours.
   If you integrated Prisma Cloud with Active Directory, and you're using the sAMAccountName _user identifier_, escape the backslash in `DOMAIN\sAMAccountName`.
   For example:
 
-  ```
+  ```bash
   $ curl \
     -H "Content-Type: application/json" \
     -d '{"username":"DOMAIN\\<USERNAME>", "password":"<PASSWORD>"}' \
-    <CONSOLE>/api/v1/authenticate
+    "https://<CONSOLE>/api/v<VERSION>/authenticate"
   {
    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
   }
@@ -84,8 +62,9 @@ Tokens are valid for 24 hours.
 
   For example, test the connection by retrieving your compliance policies.
 
-  ```
-  $ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
-    <CONSOLE>/api/v1/policies/compliance/container
+  ```bash
+  $ curl \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
+    "https://<CONSOLE>/api/v<VERSION>/policies/compliance/container"
   ```
 
